@@ -1,12 +1,16 @@
 from flask import Flask, redirect, url_for, request, render_template, session, flash
 from functools import wraps
+from flask import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.secret_key = "my precious"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+bcrypt = Bcrypt(app)
 
+# config
+import os
+
+# app.config.from_object('config.BaseConfig')
+app.config.from_object(os.environ['APP_SETTINGS'])  # CREATING AN ENVIRONMENT VARIABLE
 # create the sqlalchemy object
 db = SQLAlchemy(app)
 # model import done here and not at the top to cater for the sqlalchemy instance that is usefull at the model
@@ -28,7 +32,6 @@ def login_required(f):
 @app.route('/')
 @login_required
 def home():
-
     # return "hello, world # return a string"
     posts = db.session.query(BlogPost).all()
     return render_template('index.html', posts=posts)
@@ -61,4 +64,4 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
