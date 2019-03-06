@@ -1,12 +1,8 @@
-import os
-
-
 # default config
 class BaseConfig(object):
     DEBUG = False
     SECRET_KEY = 'my precious'
-    # SQLALCHEMY_DATABASE_URI = 'sqlite:///posts.db'
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URI']
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:mightmight@localhost/dvdrental'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
